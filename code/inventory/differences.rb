@@ -1,7 +1,15 @@
 def inventory_from(filename)
-	File.open(filename).collect do |line|
+	inventory = File.open(filename)
+	downcased = inventory.collect do |line|
 		line.downcase
 	end
+	downcased.reject do |line|
+		boring?(line)
+	end
+end
+
+def boring?(line)
+	line.split('/').include?('temp') or line.split('/').include?('recycler')
 end
 
 unless ARGV.length == 2
