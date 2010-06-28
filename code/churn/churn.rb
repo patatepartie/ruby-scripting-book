@@ -2,8 +2,8 @@ def month_before(a_time)
   a_time - 28 * 24 * 60 * 60
 end
 
-def header(a_time)
-  a_time.strftime("Changes since %Y-%m-%d:")
+def header(an_svn_date)
+  "Changes since #{an_svn_date}:"
 end
 
 def subsystem_line(subsystem_name, change_count)
@@ -34,9 +34,13 @@ def svn_log(subsystem, start_date)
   `svn log #{timespan} #{root}/#{subsystem}`
 end
 
+def svn_date(a_time)
+  a_time.strftime("%Y-%m-%d")
+end
+
 if $0 == __FILE__
-  subsystem_names = ['audit', 'fulfillment', 'persistence', 'uri', 'util', 'inventory']
-  start_date = month_before(Time.now)
+  subsystem_names = ['audit', 'fulfillment', 'persistence', 'ui', 'util', 'inventory']
+  start_date = svn_date(month_before(Time.now))
 
   puts header(start_date)
   subsystem_names.each do | name |
