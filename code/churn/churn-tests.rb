@@ -42,4 +42,9 @@ class  ChurnTests < Test::Unit::TestCase #(3)
   def test_subversion_log_with_changes
     assert_equal(2, extract_change_count_from("------------------------------------------------------------------------\nr2 | marick | 2005-08-07 14:26:21 -0500 (Mon, 07 Aug 2005) | 1 linei\n\nadded code to handle merger\n------------------------------------------------------------------------\nr1 | marick | 2005-08-07 14:21:47 -0500 (Mon, 07 Aug 2005) | 1 line\n\nfirst touches\nNo commit for revision 0.\n------------------------------------------------------------------------\n"))
   end
+
+  def test_churn_line_to_int_extracts_parenthesized_change_count
+    assert_equal(19, churn_line_to_int("            ui2 **** (19)"))
+    assert_equal(9, churn_line_to_int("            ui ** (9)"))
+  end
 end
