@@ -10,18 +10,23 @@ def check_usage   # (1)
   end
 end
 
-def boring?(line)
-  line.split('/').include?('temp') or
-    line.split('/').include?('recycler')
+def boring?(line, boring_words)
+  boring_words.any? do | boring_word |
+    contains?(line, boring_word)
+  end  
+end
+
+def contains?(line, pattern)
+  line.chomp.split('/').include?(pattern)
 end
 
 def inventory_from(filename)
   inventory = File.open(filename)
   downcased = inventory.collect do | line | 
-    line.chomp.downcase
+    line.downcase
   end
   downcased.reject do | line |
-    boring?(line)
+    boring?(line, ['temp', 'recycler'])
   end
 end
 
