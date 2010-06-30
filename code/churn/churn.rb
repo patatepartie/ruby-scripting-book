@@ -1,5 +1,11 @@
+require 'churn-classes'
+
 def month_before(a_time)
   a_time - 28 * 24 * 60 * 60
+end
+
+def years_before(a_time, years)
+  a_time - years * 365 * 24 * 60 * 60
 end
 
 def header(an_svn_date)
@@ -13,29 +19,6 @@ end
 
 def asterisks_for(an_integer)
   '*' * (an_integer / 5.0).round
-end
-
-def change_count_for(name, start_date)
-  extract_change_count_from(svn_log(name, start_date))
-end
-
-def extract_change_count_from(log_text)
-  lines = log_text.split("\n")
-  dashed_lines = lines.find_all do | line |
-    line.include?('-----')
-  end
-  dashed_lines.length - 1 
-end
-
-def svn_log(subsystem, start_date)
-  timespan = "--revision 'HEAD:{#{start_date}}'"
-  root = "svn://rubyforge.org//var/svn/churn-demo"
-
-  `svn log #{timespan} #{root}/#{subsystem}`
-end
-
-def svn_date(a_time)
-  a_time.strftime("%Y-%m-%d")
 end
 
 def churn_line_to_int(line)
@@ -52,11 +35,13 @@ end
 
 if $0 == __FILE__
   subsystem_names = ['audit', 'fulfillment', 'persistence', 'ui', 'util', 'inventory']
-  start_date = svn_date(month_before(Time.now))
+  root = "svn://rubyforge.org//var/svn/churn-demo"
+  repository = SubversionRepository.new(root)
+  start_date = repository.date(years_before(Time.now, 4))
 
   puts header(start_date)
   lines = subsystem_names.collect do | name |
-    subsystem_line(name, change_count_for(name, start_date))
+    subsystem_line(name, repository.change_count_for(name, start_date))
   end
   puts order_by_descending_change_count(lines)
 end
