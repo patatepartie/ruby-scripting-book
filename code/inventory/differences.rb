@@ -9,8 +9,10 @@ def contains?(line, pattern)
   line.chomp.split('/').include?(pattern)
 end
 
-def boring?(line)
-  contains?(line, 'temp') or contains?(line, 'recycler')
+def boring?(line, boring_words)
+  boring_words.any? do |word|
+    contains?(line, word)
+  end
 end
 
 def inventory_from(filename)
@@ -18,8 +20,9 @@ def inventory_from(filename)
   downcased = inventory.collect do |line|
     line.downcase
   end
+
   downcased.reject do |line|
-    boring?(line)
+    boring?(line, ['temp', 'recycler'])
   end
 end
 
