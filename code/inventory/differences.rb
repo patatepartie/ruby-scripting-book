@@ -3,8 +3,14 @@ unless ARGV.length == 2
   exit
 end
 
-old_inventory = File.open(ARGV[0]).readlines
-new_inventory = File.open(ARGV[1]).readlines
+def inventory_from(filename)
+  File.open(filename).collect do |line|
+    line.downcase
+  end
+end
+
+old_inventory = inventory_from(ARGV[0])
+new_inventory = inventory_from(ARGV[1])
 
 puts "The following files have been added:"
 puts new_inventory - old_inventory
