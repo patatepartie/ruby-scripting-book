@@ -20,9 +20,23 @@ end
 old_inventory = inventory_from(ARGV[0])
 new_inventory = inventory_from(ARGV[1])
 
-puts "The following files have been added:"
+added_files_count = (new_inventory - old_inventory).length
+puts "The following "
+puts added_files_count
+puts " files have been added:"
+
 puts new_inventory - old_inventory
 
 puts ""
-puts "The following files have been deleted:"
+removed_files_count = (old_inventory - new_inventory).length
+puts "The following "
+puts removed_files_count
+puts " files have been deleted:"
 puts old_inventory - new_inventory
+
+puts ""
+unchanged_files_count = (old_inventory - (old_inventory - new_inventory)).length
+puts "The following "
+puts unchanged_files_count
+puts " files have not changed:"
+puts old_inventory - (old_inventory - new_inventory)
