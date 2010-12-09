@@ -5,8 +5,12 @@ def check_usage
   end
 end
 
+def contains?(line, pattern)
+  line.chomp.split('/').include?(pattern)
+end
+
 def boring?(line)
-  line.chomp.split('/').include?('temp') or line.chomp.split('/').include?('recycler')
+  contains?(line, 'temp') or contains?(line, 'recycler')
 end
 
 def inventory_from(filename)
