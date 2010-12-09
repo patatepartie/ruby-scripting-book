@@ -10,7 +10,7 @@ end
 def inventory_from(filename)
   inventory = File.open(filename)
   downcased = inventory.collect do |line|
-    line.downcase
+    line.chomp.downcase
   end
   downcased.reject do |line|
     boring?(line)
