@@ -6,13 +6,13 @@ def check_usage
 end
 
 def boring?(line)
-  line.split('/').include?('temp') or line.split('/').include?('recycler')
+  line.chomp.split('/').include?('temp') or line.chomp.split('/').include?('recycler')
 end
 
 def inventory_from(filename)
   inventory = File.open(filename)
   downcased = inventory.collect do |line|
-    line.chomp.downcase
+    line.downcase
   end
   downcased.reject do |line|
     boring?(line)
