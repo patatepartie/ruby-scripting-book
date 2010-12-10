@@ -2,6 +2,10 @@ def month_before(a_time)
   a_time - 28 * 24 * 60 * 60
 end
 
+def header(a_time)
+  a_time.strftime("Changes since %Y-%m-%d:")
+end
+
 if $0 == __FILE__
   subsystem_names = ['audit', 'fulfilment', 'persistence', 'ui', 'util', 'inventory']
   start_date = month_before(Time.now)
