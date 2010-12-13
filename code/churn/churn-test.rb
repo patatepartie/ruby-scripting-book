@@ -22,4 +22,18 @@ class ChurnTests < Test::Unit::TestCase
     assert_equal('****', asterisks_for(18))
     assert_equal('***', asterisks_for(17))
   end
+
+  def test_subversion_log_can_have_no_changes
+    assert_equal(0, extract_change_count_from("------------------------------------------------------------------------\n"))
+  end
+
+  def test_subversion_log_with_changes
+    assert_equal(2, extract_change_count_from("------------------------------------------------------------------------\n\
+      r2 | marick | 2005-08-07 14:26:21 -0500 (Mon, 07 Aug 2005) | 1 line\n\n\
+      added code to handle merger\n\
+      ------------------------------------------------------------------------\n\
+      r1 | marick | 2005-08-07 14:21:47 -0500 (Mon, 07 Aug 2005) | 1 line\n\n\
+      first touches\n\
+      ------------------------------------------------------------------------\n"))
+    end
 end
