@@ -11,8 +11,8 @@ def svn_date(a_time)
   a_time.strftime("%Y-%m-%d")
 end
 
-def header(an_svn_date)
-  "Changes since #{an_svn_date}:"
+def header(svn_start_date, svn_end_date)
+  "Changes between #{svn_start_date} and #{svn_end_date}:"
 end
 
 def subsystem_line(subsystem_name, change_count)
@@ -54,8 +54,9 @@ if $0 == __FILE__
   subsystem_names = ['audit', 'fulfillment', 'persistence',
                      'ui', 'util', 'inventory']
   start_date = svn_date(month_before(Time.now))
+  end_date = svn(Time.now)
 
-  puts header(start_date)
+  puts header(start_date, end_date)
   subsystem_names.each do | name |
     puts subsystem_line(name, change_count_for(name, start_date)) 
   end
