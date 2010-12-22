@@ -30,6 +30,11 @@ class ChurnTests < Test::Unit::TestCase
                  subsystem_line("audit", 45))
   end
 
+  def test_empty_subsystem_line_format
+    assert_equal('audit          -              -',
+                 subsystem_line("audit", 0))
+  end
+
   def test_asterisks_for_zero_returns_dash_
     assert_equal('-', asterisks_for(0))
   end

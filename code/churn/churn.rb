@@ -17,8 +17,16 @@ end
 
 def subsystem_line(subsystem_name, change_count)
   asterisks = asterisks_for(change_count)
-  changes = "(#{change_count} changes)"
+  changes = changes_for(change_count)
   "#{subsystem_name.ljust(14)} #{changes.ljust(14)} #{asterisks}"
+end
+
+def changes_for(change_count)
+  if change_count == 0
+    "-"
+  else
+    "(#{change_count} changes)"
+  end
 end
 
 def asterisks_for(an_integer)
