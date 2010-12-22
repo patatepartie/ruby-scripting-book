@@ -23,6 +23,8 @@ end
 def asterisks_for(an_integer)
   if an_integer == 0
     '-'
+  elsif an_integer <= 2
+    '*'
   else
     '*' * (an_integer / 5.0).round
   end

@@ -34,6 +34,10 @@ class ChurnTests < Test::Unit::TestCase
     assert_equal('-', asterisks_for(0))
   end
 
+  def test_asterisks_for_less_than_five_returns_one
+    assert_equal('*', asterisks_for(2))
+  end
+
   def test_asterisks_for_divides_by_five
     assert_equal('****', asterisks_for(20))
   end
