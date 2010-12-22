@@ -1,11 +1,14 @@
 class SubversionRepository
-
+	def initialize(root)
+		@root = root
+	end
+	
 	def date(a_time)
 		a_time.strftime("%Y-%m-%d")
 	end
 
 	def change_count_for(name, start_date)
-		extract_change_count_from(svn_log(name, start_date))
+		extract_change_count_from(log(name, start_date))
 	end
 	
 	def extract_change_count_from(log_text)
@@ -18,8 +21,7 @@ class SubversionRepository
 
 	def log(subsystem, start_date)
 		timespan = "--revision 'HEAD:{#{start_date}}'"
-		root = "svn://rubyforge.org//var/svn/churn-demo"
 
-		`svn log #{timespan} #{root}/#{subsystem}`
+		`svn log #{timespan} #{@root}/#{subsystem}`
 	end
 end

@@ -31,13 +31,14 @@ def churn_line_to_int(line)
 end
 
 if $0 == __FILE__
-  subsystem_names = ['audit', 'fulfilment', 'persistence', 'ui', 'util', 'inventory']
-  repository = SubversionRepository.new
-  start_date = repository.svn_date(month_before(Time.now))
+  subsystem_names = ['audit', 'fulfillment', 'persistence', 'ui', 'util', 'inventory']
+  root = "svn://rubyforge.org//var/svn/churn-demo"
+  repository = SubversionRepository.new(root)
+  start_date = repository.date(month_before(Time.now))
 
   puts header(start_date)
   lines = subsystem_names.collect do |name|
-    puts subsystem_line(name, repository.change_count_for(name, start_date))
+    subsystem_line(name, repository.change_count_for(name, start_date))
   end
 
   puts order_by_descending_change_count(lines)

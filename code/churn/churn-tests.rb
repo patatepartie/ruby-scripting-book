@@ -8,7 +8,7 @@ class ChurnTests < Test::Unit::TestCase
   end
 
   def test_header_format
-  	repository = SubversionRepository.new
+  	repository = SubversionRepository.new(nil)
     assert_equal("Changes since 2005-08-05:", header(repository.date(month_before(Time.local(2005, 9, 2)))))
   end
 
@@ -26,12 +26,12 @@ class ChurnTests < Test::Unit::TestCase
   end
 
   def test_subversion_log_can_have_no_changes
-	  repository = SubversionRepository.new
+	repository = SubversionRepository.new(nil)
     assert_equal(0, repository.extract_change_count_from("------------------------------------------------------------------------\n"))
   end
 
   def test_subversion_log_with_changes
- 	  repository = SubversionRepository.new
+	repository = SubversionRepository.new(nil)
     assert_equal(2, repository.extract_change_count_from("------------------------------------------------------------------------\n\
       r2 | marick | 2005-08-07 14:26:21 -0500 (Mon, 07 Aug 2005) | 1 line\n\n\
       added code to handle merger\n\
