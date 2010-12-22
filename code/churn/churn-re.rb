@@ -65,6 +65,11 @@ def with_changes(lines)
   end
 end
 
+def rearrange(name)
+  match = /(\w+),\s(\w+)\s(\w+)/.match(name)
+  "#{match[2]} #{match[3][0..0]}. #{match[1]}"
+end
+
 if $0 == __FILE__
   subsystem_names = ['audit', 'fulfillment', 'persistence',
                      'ui', 'util', 'inventory']

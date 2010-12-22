@@ -78,4 +78,8 @@ class ChurnTests < Test::Unit::TestCase
   def test_with_changes_is_not_fooled_by_asterisk_in_subsystem
     assert_equal(["  ui **** (19)"], with_changes(["  ui **** (19)", "persistence* (0)"]))
   end
+
+  def test_rearrange_with_middle_name
+    assert_equal("Dawn E. Marick", rearrange("Marick, Dawn Elaine"))
+  end
 end
