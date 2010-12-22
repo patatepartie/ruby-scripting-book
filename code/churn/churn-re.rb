@@ -61,7 +61,7 @@ end
 
 def with_changes(lines)
   lines.find_all do | line |
-    /\*+/ =~ line
+    /\s\*+\s/ =~ line
   end
 end
 
