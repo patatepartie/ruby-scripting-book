@@ -26,7 +26,7 @@ class ChurnTests < Test::Unit::TestCase
   end
 
   def test_normal_subsystem_line_format
-    assert_equal('         audit ********* (45)',
+    assert_equal('audit          (45 changes)   *********',
                  subsystem_line("audit", 45))
   end
 

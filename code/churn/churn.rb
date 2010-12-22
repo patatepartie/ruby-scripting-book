@@ -17,7 +17,8 @@ end
 
 def subsystem_line(subsystem_name, change_count)
   asterisks = asterisks_for(change_count)
-  "#{subsystem_name.rjust(14)} #{asterisks} (#{change_count})"
+  changes = "(#{change_count} changes)"
+  "#{subsystem_name.ljust(14)} #{changes.ljust(14)} #{asterisks}"
 end
 
 def asterisks_for(an_integer)
