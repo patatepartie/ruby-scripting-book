@@ -38,6 +38,15 @@ def svn_date(a_time)
   a_time.strftime("%Y-%m-%d")
 end
 
+def order_by_descending_change_count(lines)
+  lines.sort do |one, another|
+    one_count = churn_line_to_int(one)
+    another_count = churn_line_to_int(another)
+
+    - (one_count <=> another_count)
+  end
+end
+
 def churn_line_to_int(line)
   /\((\d+)\)/.match(line)[1].to_i
 end
