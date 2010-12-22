@@ -52,7 +52,6 @@ class ChurnTests < Test::Unit::TestCase
     assert_equal(9, churn_line_to_int("       ui ** (9)"))
   end
 
-
   def test_order_by_descending_change_count
     original = [ "all that really matters is the number in parens - (1)",
                  "     inventory  (0)",
@@ -77,6 +76,13 @@ class ChurnTests < Test::Unit::TestCase
 
   def test_with_changes_is_not_fooled_by_asterisk_in_subsystem
     assert_equal(["  ui **** (19)"], with_changes(["  ui **** (19)", "persistence* (0)"]))
+  end
+
+  def test_interestring_line_subsystem_can_have_asterisks_anywhere
+    weird_but_boring = subsystem_line('+ and *** (3) and -', 0)
+    original = [weird_but_boring]
+    expected = []
+    assert_equal(expected, with_changes(original))
   end
 
   def test_rearrange_with_middle_name
