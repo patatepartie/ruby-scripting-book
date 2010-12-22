@@ -4,7 +4,7 @@
 # Visit http://www.pragmaticprogrammer.com/titles/bmsft for more book information.
 #---
 require 'test/unit' 
-require 'churn'     
+require 'churn-re'     
 
 
 class ChurnTests < Test::Unit::TestCase 
@@ -67,4 +67,11 @@ class ChurnTests < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_with_changes_choose_non_empty_line
+    assert_equal(["  ui **** (19)"], with_changes(["  ui **** (19)"]))
+  end
+
+  def test_with_changes_reject_empty_lines
+    assert_equal(["  ui **** (19)"], with_changes(["  ui **** (19)", "persistence (0)"]))
+  end
 end

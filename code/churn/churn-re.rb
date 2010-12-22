@@ -59,6 +59,12 @@ def churn_line_to_int(line)
 end
 
 
+def with_changes(lines)
+  lines.find_all do | line |
+    /\*+/ =~ line
+  end
+end
+
 if $0 == __FILE__
   subsystem_names = ['audit', 'fulfillment', 'persistence',
                      'ui', 'util', 'inventory']
@@ -68,6 +74,7 @@ if $0 == __FILE__
   lines = subsystem_names.collect do | name | #(4) 
     subsystem_line(name, change_count_for(name, start_date)) 
   end
-  puts order_by_descending_change_count(lines) #(5)
+
+  puts order_by_descending_change_count(with_changes(lines)) #(5)
 end
 
