@@ -35,5 +35,10 @@ class ChurnTests < Test::Unit::TestCase
       r1 | marick | 2005-08-07 14:21:47 -0500 (Mon, 07 Aug 2005) | 1 line\n\n\
       first touches\n\
       ------------------------------------------------------------------------\n"))
-    end
+  end
+
+  def test_churn_line_to_int_extracts_parenthesized_change_count
+    assert_equal(19, churn_line_to_int("      ui2 **** (19)"))
+    assert_equal(9, churn_line_to_int("      ui ** (9)"))
+  end
 end

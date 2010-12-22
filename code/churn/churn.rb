@@ -38,12 +38,18 @@ def svn_date(a_time)
   a_time.strftime("%Y-%m-%d")
 end
 
+def churn_line_to_int(line)
+  /\((\d+)\)/.match(line)[1].to_i
+end
+
 if $0 == __FILE__
   subsystem_names = ['audit', 'fulfilment', 'persistence', 'ui', 'util', 'inventory']
   start_date = svn_date(month_before(Time.now))
 
   puts header(start_date)
-  subsystem_names.each do |name|
+  lines = subsystem_names.collect do |name|
     puts subsystem_line(name, change_count_for(name, start_date))
   end
+
+  puts order_by_descending_change_count(lines)
 end
