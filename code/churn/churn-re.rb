@@ -66,8 +66,17 @@ def with_changes(lines)
 end
 
 def rearrange(name)
-  match = /(\w+),\s(\w+)\s(\w+)/.match(name)
-  "#{match[2]} #{match[3][0..0]}. #{match[1]}"
+  match = /(\w+),\s(\w+)\s?(\w+)?/.match(name)
+  initial = initializeMiddle(match[3])
+  "#{match[2]} #{initial}#{match[1]}"
+end
+
+def initializeMiddle(middle)
+  if middle
+    "#{middle[0..0]}. "
+  else
+    ""
+  end
 end
 
 if $0 == __FILE__

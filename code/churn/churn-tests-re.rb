@@ -82,4 +82,8 @@ class ChurnTests < Test::Unit::TestCase
   def test_rearrange_with_middle_name
     assert_equal("Dawn E. Marick", rearrange("Marick, Dawn Elaine"))
   end
+
+  def test_rearrange_without_middle_name
+    assert_equal("Paul Marick", rearrange("Marick, Paul"))
+  end
 end
