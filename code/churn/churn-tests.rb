@@ -30,6 +30,10 @@ class ChurnTests < Test::Unit::TestCase
                  subsystem_line("audit", 45))
   end
 
+  def test_asterisks_for_zero_returns_dash_
+    assert_equal('-', asterisks_for(0))
+  end
+
   def test_asterisks_for_divides_by_five
     assert_equal('****', asterisks_for(20))
   end

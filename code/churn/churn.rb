@@ -21,7 +21,11 @@ def subsystem_line(subsystem_name, change_count)
 end
 
 def asterisks_for(an_integer)
-  '*' * (an_integer / 5.0).round
+  if an_integer == 0
+    '-'
+  else
+    '*' * (an_integer / 5.0).round
+  end
 end
 
 def change_count_for(name, start_date)
