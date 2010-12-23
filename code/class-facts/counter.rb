@@ -8,4 +8,8 @@ class Counter
 	def self.count
 		@count or 0
 	end
+	
+	def self.reset
+		@count = 0
+	end
 end

@@ -2,6 +2,10 @@ require 'test/unit'
 require 'counter'
 
 class CounterTests < Test::Unit::TestCase
+	def setup
+		Counter.reset
+	end
+
 	def test_counts_new_instances
 		assert_equal(0, Counter.count)
 		Counter.counted_new
