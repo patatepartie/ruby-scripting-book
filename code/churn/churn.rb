@@ -34,24 +34,24 @@ class SubversionRepository
 
 end
 
+class Formatter
+	def header(a_date)
+		"Changes since #{a_date}:"
+	end
+
+	def subsystem_line(subsystem_name, change_count)
+		asterisks = asterisks_for(change_count)
+		"#{subsystem_name.rjust(14)} #{asterisks} (#{change_count})"
+	end
+
+	def asterisks_for(an_integer)
+		'*' * (an_integer / 5.0).round
+	end
+end
 
 def month_before(a_time)
   a_time - 28 * 24 * 60 * 60
 end
-
-def header(a_date)
-  "Changes since #{a_date}:"
-end
-
-def subsystem_line(subsystem_name, change_count)
-  asterisks = asterisks_for(change_count)
-  "#{subsystem_name.rjust(14)} #{asterisks} (#{change_count})"
-end
-
-def asterisks_for(an_integer)
-  '*' * (an_integer / 5.0).round
-end
-
 
 def order_by_descending_change_count(lines)
   lines.sort do | one, another |
@@ -73,9 +73,10 @@ if $0 == __FILE__
   repository = SubversionRepository.new(root)
   start_date = repository.date(month_before(Time.now))
 
-  puts header(start_date)
+	formatter = Formatter.new
+  puts formatter.header(start_date)
   lines = subsystem_names.collect do | name |
-    subsystem_line(name, repository.change_count_for(name, start_date)) 
+    formatter.subsystem_line(name, repository.change_count_for(name, start_date)) 
   end
   puts order_by_descending_change_count(lines)
 end
