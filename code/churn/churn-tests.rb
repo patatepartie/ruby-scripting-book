@@ -62,6 +62,26 @@ class FormatterTests < Test::Unit::TestCase
     assert_equal('****', @formatter.asterisks_for(18))
     assert_equal('***', @formatter.asterisks_for(17))
   end
+  
+  def test_churn_line_to_int_extracts_parenthesized_change_count
+    assert_equal(19, @formatter.churn_line_to_int("       ui2 **** (19)"))
+    assert_equal(9, @formatter.churn_line_to_int("       ui ** (9)"))
+  end
+
+
+  def test_order_by_descending_change_count
+    original = [ "all that really matters is the number in parens - (1)",
+                 "     inventory  (0)",
+                 "            ui ** (12)" ]
+
+    expected = [ "            ui ** (12)",
+                 "all that really matters is the number in parens - (1)",
+                 "     inventory  (0)" ]
+
+    actual = @formatter.order_by_descending_change_count(original)
+
+    assert_equal(expected, actual)
+  end
 end
 
 class ChurnTests < Test::Unit::TestCase 
@@ -87,24 +107,5 @@ class ChurnTests < Test::Unit::TestCase
   # I faced the same decision earlier and made the opposite choice. I
   # guess I was wrong one of the times.
 
-  def test_churn_line_to_int_extracts_parenthesized_change_count
-    assert_equal(19, churn_line_to_int("       ui2 **** (19)"))
-    assert_equal(9, churn_line_to_int("       ui ** (9)"))
-  end
-
-
-  def test_order_by_descending_change_count
-    original = [ "all that really matters is the number in parens - (1)",
-                 "     inventory  (0)",
-                 "            ui ** (12)" ]
-
-    expected = [ "            ui ** (12)",
-                 "all that really matters is the number in parens - (1)",
-                 "     inventory  (0)" ]
-
-    actual = order_by_descending_change_count(original)
-
-    assert_equal(expected, actual)
-  end
 
 end
