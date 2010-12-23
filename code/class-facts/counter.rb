@@ -1,4 +1,6 @@
 class Counter
+	attr_reader :birth_order
+	
 	def self.counted_new
 		@count = 0 if @count.nil?
 		@count += 1
