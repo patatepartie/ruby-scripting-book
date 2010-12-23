@@ -14,7 +14,10 @@ class CounterTests < Test::Unit::TestCase
 		assert_equal(2, Counter.count)
 	end
 	
-	def test_birth_order_nil_by_default
-		assert_equal(nil, Counter.counted_new.birth_order)
+	def test_birth_order
+		first = Counter.counted_new
+		second = Counter.counted_new
+		assert_equal(2, second.birth_order)
+		assert_equal(1, first.birth_order)
 	end
 end
