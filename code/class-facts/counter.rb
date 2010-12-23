@@ -6,6 +6,6 @@ class Counter
 	end
 	
 	def self.count
-		@count
+		@count or 0
 	end
 end
