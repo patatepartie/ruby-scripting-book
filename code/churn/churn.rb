@@ -35,6 +35,14 @@ class SubversionRepository
 end
 
 class Formatter
+	def use_date(a_date)
+		@start_date = a_date
+	end
+	
+	def output
+		[header(@start_date)]
+	end
+	
 	def header(a_date)
 		"Changes since #{a_date}:"
 	end
@@ -74,7 +82,9 @@ if $0 == __FILE__
   start_date = repository.date(month_before(Time.now))
 
 	formatter = Formatter.new
-  puts formatter.header(start_date)
+	formatter.use_date(start_date)
+  puts formatter.output
+  
   lines = subsystem_names.collect do | name |
     formatter.subsystem_line(name, repository.change_count_for(name, start_date)) 
   end

@@ -46,6 +46,11 @@ class FormatterTests < Test::Unit::TestCase
 		@formatter = Formatter.new
 	end
 
+	def test_date_used_in_first_line_of_output
+		@formatter.use_date('2005-08-05')
+		assert_equal("Changes since 2005-08-05:", @formatter.output.first)
+	end
+	
 	def test_header_format
     assert_equal("Changes since 2005-08-05:", @formatter.header('2005-08-05'))
   end
