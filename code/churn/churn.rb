@@ -10,12 +10,12 @@ class SubversionRepository
     @root = root    # (1)
   end
 
-  def date(a_time)
-    a_time.strftime("%Y-%m-%d")
+  def change_count_for(name, start_date)
+    extract_change_count_from(log(name, date(start_date)))
   end
 
-  def change_count_for(name, start_date)
-    extract_change_count_from(log(name, start_date))
+  def date(a_time)
+    a_time.strftime("%Y-%m-%d")
   end
 
   def extract_change_count_from(log_text)
@@ -39,8 +39,9 @@ class Formatter
 		@subsystem_changes = []
 	end
 	
-	def use_date(a_date)
-		@start_date = a_date
+	def report_range(start_date, end_date)
+		@start_date = start_date
+		@end_date = end_date
 	end
 
 	def use_subsystem_with_change_count(subsystem_name, change_count)
@@ -51,14 +52,18 @@ class Formatter
 	 	lines = @subsystem_changes.collect do | subsystem_change |
 		  subsystem_line(subsystem_change[0], subsystem_change[1]) 
 		end
-		[header(@start_date)] + order_by_descending_change_count(lines).collect do | line |
+		[header] + order_by_descending_change_count(lines).collect do | line |
 			line
 		end
 	end
 	
-	def header(a_date)
-		"Changes since #{a_date}:"
+	def header
+		"Changes since #{date(@start_date)}:"
 	end
+	
+  def date(a_time)
+    a_time.strftime("%Y-%m-%d")
+  end
 	
 	def subsystem_line(subsystem_name, change_count)
 		asterisks = asterisks_for(change_count)
@@ -92,13 +97,13 @@ if $0 == __FILE__
                      'ui', 'util', 'inventory']     
   root="svn://rubyforge.org//var/svn/churn-demo"
   repository = SubversionRepository.new(root)
-  start_date = repository.date(month_before(Time.now))
+  last_month = month_before(Time.now)
 
 	formatter = Formatter.new
-	formatter.use_date(start_date)
+	formatter.report_range(last_month, Time.now)
   
   subsystem_names.collect do | name |
-    formatter.use_subsystem_with_change_count(name, repository.change_count_for(name, start_date)) 
+    formatter.use_subsystem_with_change_count(name, repository.change_count_for(name, last_month)) 
   end
   
   puts formatter.output

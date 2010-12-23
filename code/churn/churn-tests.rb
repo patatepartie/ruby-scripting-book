@@ -44,20 +44,16 @@ end
 class FormatterTests < Test::Unit::TestCase 
 	def setup
 		@formatter = Formatter.new
+		@formatter.report_range(Time.local(2005, 9, 5), Time.local(2005, 11, 4))
+  	@formatter.use_subsystem_with_change_count("audit", 45)
+  	@formatter.use_subsystem_with_change_count("ui", 10)
 	end
 
 	def test_date_used_in_first_line_of_output
-		@formatter.use_date('2005-09-05')
 		assert_equal("Changes since 2005-09-05:", @formatter.output.first)
 	end
-	
-	def test_header_format
-    assert_equal("Changes since 2005-08-05:", @formatter.header('2005-08-05'))
-  end
   	
   def test_using_subsystems_shows_in_output
-  	@formatter.use_subsystem_with_change_count("audit", 45)
-  	@formatter.use_subsystem_with_change_count("ui", 10)
   	output = @formatter.output
     assert_equal('         audit ********* (45)', output[1])
 		assert_equal('            ui ** (10)', output[2])
