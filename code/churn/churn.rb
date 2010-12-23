@@ -35,18 +35,31 @@ class SubversionRepository
 end
 
 class Formatter
+	def initialize
+		@subsystem_changes = []
+	end
+	
 	def use_date(a_date)
 		@start_date = a_date
 	end
+
+	def use_subsystem_with_change_count(subsystem_name, change_count)
+		@subsystem_changes << [subsystem_name, change_count]
+	end
 	
 	def output
-		[header(@start_date)]
+	 	lines = @subsystem_changes.collect do | subsystem_change |
+		  subsystem_line(subsystem_change[0], subsystem_change[1]) 
+		end
+		[header(@start_date)] + order_by_descending_change_count(lines).collect do | line |
+			line
+		end
 	end
 	
 	def header(a_date)
 		"Changes since #{a_date}:"
 	end
-
+	
 	def subsystem_line(subsystem_name, change_count)
 		asterisks = asterisks_for(change_count)
 		"#{subsystem_name.rjust(14)} #{asterisks} (#{change_count})"
@@ -83,11 +96,11 @@ if $0 == __FILE__
 
 	formatter = Formatter.new
 	formatter.use_date(start_date)
-  puts formatter.output
   
-  lines = subsystem_names.collect do | name |
-    formatter.subsystem_line(name, repository.change_count_for(name, start_date)) 
+  subsystem_names.collect do | name |
+    formatter.use_subsystem_with_change_count(name, repository.change_count_for(name, start_date)) 
   end
-  puts formatter.order_by_descending_change_count(lines)
+  
+  puts formatter.output
 end
 

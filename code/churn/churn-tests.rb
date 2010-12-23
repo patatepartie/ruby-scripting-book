@@ -47,14 +47,22 @@ class FormatterTests < Test::Unit::TestCase
 	end
 
 	def test_date_used_in_first_line_of_output
-		@formatter.use_date('2005-08-05')
-		assert_equal("Changes since 2005-08-05:", @formatter.output.first)
+		@formatter.use_date('2005-09-05')
+		assert_equal("Changes since 2005-09-05:", @formatter.output.first)
 	end
 	
 	def test_header_format
     assert_equal("Changes since 2005-08-05:", @formatter.header('2005-08-05'))
   end
   	
+  def test_using_subsystems_shows_in_output
+  	@formatter.use_subsystem_with_change_count("audit", 45)
+  	@formatter.use_subsystem_with_change_count("ui", 10)
+  	output = @formatter.output
+    assert_equal('         audit ********* (45)', output[1])
+		assert_equal('            ui ** (10)', output[2])
+	end
+	
   def test_normal_subsystem_line_format
     assert_equal('         audit ********* (45)', @formatter.subsystem_line("audit", 45))
   end
