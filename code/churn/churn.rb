@@ -5,6 +5,11 @@
 #---
 
 class SubversionRepository
+
+  def initialize(root)
+    @root = root    # (1)
+  end
+
   def date(a_time)
     a_time.strftime("%Y-%m-%d")
   end
@@ -23,11 +28,12 @@ class SubversionRepository
 
   def log(subsystem, start_date)
     timespan = "--revision 'HEAD:{#{start_date}}'"
-    root = "svn://rubyforge.org//var/svn/churn-demo"
     
-    `svn log #{timespan} #{root}/#{subsystem}`
+    `svn log #{timespan} #{@root}/#{subsystem}`      # (2)
   end
+
 end
+
 
 def month_before(a_time)
   a_time - 28 * 24 * 60 * 60
@@ -62,14 +68,14 @@ end
 
 if $0 == __FILE__
   subsystem_names = ['audit', 'fulfillment', 'persistence',
-                     'ui', 'util', 'inventory']
-  repository = SubversionRepository.new #(1)
-  start_date = repository.date(month_before(Time.now)) #(2)
+                     'ui', 'util', 'inventory']     
+  root="svn://rubyforge.org//var/svn/churn-demo"
+  repository = SubversionRepository.new(root)
+  start_date = repository.date(month_before(Time.now))
 
   puts header(start_date)
   lines = subsystem_names.collect do | name |
-    subsystem_line(name,
-                   repository.change_count_for(name, start_date)) #(3)
+    subsystem_line(name, repository.change_count_for(name, start_date)) 
   end
   puts order_by_descending_change_count(lines)
 end
